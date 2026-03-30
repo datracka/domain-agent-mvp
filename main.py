@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 PerformMax AI — FastAPI entry point
 
@@ -10,6 +12,7 @@ Endpoints:
 
 import uuid
 from contextlib import asynccontextmanager
+from typing import Optional
 
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
@@ -56,7 +59,7 @@ app.add_middleware(
 # ─────────────────────────────────────────────
 class ChatRequest(BaseModel):
     message: str
-    session_id: str | None = None  # omit to start a new session
+    session_id: Optional[str] = None  # omit to start a new session
 
 
 # ─────────────────────────────────────────────

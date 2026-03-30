@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Simple test client that exercises the agent API.
 
@@ -42,30 +44,30 @@ def chat(message: str, session_id: str | None = None) -> str:
                     continue
                 payload = json.loads(line[6:])
 
-                match payload["type"]:
-                    case "text":
-                        print(payload["content"], end="", flush=True)
-                        full_text.append(payload["content"])
+                t = payload["type"]
+                if t == "text":
+                    print(payload["content"], end="", flush=True)
+                    full_text.append(payload["content"])
 
-                    case "tool_call":
-                        print(
-                            f"\n\n  ⚙  Tool call → {payload['tool']}"
-                            f"\n     Input: {json.dumps(payload['input'], indent=6)}\n",
-                            flush=True,
-                        )
+                elif t == "tool_call":
+                    print(
+                        f"\n\n  ⚙  Tool call → {payload['tool']}"
+                        f"\n     Input: {json.dumps(payload['input'], indent=6)}\n",
+                        flush=True,
+                    )
 
-                    case "tool_result":
-                        print(
-                            f"\n  ✓  Tool result ← {payload['tool']}"
-                            f"\n     Result: {json.dumps(payload['result'], indent=6)}\n",
-                            flush=True,
-                        )
+                elif t == "tool_result":
+                    print(
+                        f"\n  ✓  Tool result ← {payload['tool']}"
+                        f"\n     Result: {json.dumps(payload['result'], indent=6)}\n",
+                        flush=True,
+                    )
 
-                    case "error":
-                        print(f"\n  ✗  Error: {payload['message']}", flush=True)
+                elif t == "error":
+                    print(f"\n  ✗  Error: {payload['message']}", flush=True)
 
-                    case "done":
-                        print()  # newline after streaming
+                elif t == "done":
+                    print()  # newline after streaming
 
     return returned_session_id
 

@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 """
 Fake tool implementations for the PerformMax AI agent.
 
